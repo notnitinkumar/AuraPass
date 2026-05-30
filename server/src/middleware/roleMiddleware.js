@@ -13,3 +13,22 @@ export const isAdmin = (
 
   next();
 };
+
+export const isOrganizerOrAdmin = (
+  req,
+  res,
+  next
+) => {
+
+  if(
+      req.user.role === 'ORGANIZER' ||
+      req.user.role === 'ADMIN'
+  ) {
+      return next();
+  }
+
+  return res.status(403).json({
+      success: false,
+      message: 'Organizer access required'
+  });
+};

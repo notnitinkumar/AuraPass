@@ -6,6 +6,7 @@ import userRoutes from "./routes/userRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import { verifyToken } from "./middleware/authMiddleware.js";
 import { isAdmin } from "./middleware/roleMiddleware.js";
+import eventRoutes from "./routes/eventRoutes.js";
 
 dotenv.config();
 
@@ -45,6 +46,7 @@ app.get("/admin", verifyToken, isAdmin, (req, res) => {
 
 app.use("/users", userRoutes);
 app.use("/auth", authRoutes);
+app.use("/events", eventRoutes);
 
 const PORT = process.env.PORT || 3000;
 
