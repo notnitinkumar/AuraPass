@@ -189,3 +189,27 @@ export const deleteEvent = async (req, res) => {
     });
   }
 };
+
+export const getMyEvents = async (req, res) => {
+  try {
+    const organizer_id = req.user.userId;
+
+    const [events] = await db.query(
+      `SELECT *
+       FROM events
+       WHERE organizer_id = ?
+       ORDER BY event_date ASC`,
+      [organizer_id]
+    );
+
+    res.status(200).json({
+      success: true,
+      events,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
