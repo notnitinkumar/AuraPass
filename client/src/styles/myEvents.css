@@ -1,0 +1,53 @@
+.my-events-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.my-events-title {
+  margin-bottom: 1.5rem;
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.my-event-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.my-event-card h2 {
+  margin-bottom: 0.75rem;
+}
+
+.my-event-card p {
+  margin-bottom: 0.5rem;
+}
+
+.event-stat {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.no-events-message {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.loading-events,
+.error-events {
+  text-align: center;
+  margin-top: 2rem;
+}

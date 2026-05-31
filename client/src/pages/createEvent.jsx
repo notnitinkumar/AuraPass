@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
+import '../styles/auth.css';
 
 function CreateEvent() {
   const navigate = useNavigate();
@@ -49,82 +50,80 @@ function CreateEvent() {
   };
 
   return (
-    <div>
-      <h1>Create Event</h1>
+    <div className='auth-container'>
+      <div className='auth-card'>
+        <h1>Create Event</h1>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="title"
-          placeholder="Title"
-          value={formData.title}
-          onChange={handleChange}
-          required
-        />
+        <form
+          className='auth-form'
+          onSubmit={handleSubmit}
+        >
+          <input
+            className='auth-input'
+            type='text'
+            name='title'
+            placeholder='Title'
+            value={formData.title}
+            onChange={handleChange}
+            required
+          />
 
-        <br />
-        <br />
+          <textarea
+            className='auth-input'
+            name='description'
+            placeholder='Description'
+            value={formData.description}
+            onChange={handleChange}
+            required
+          />
 
-        <textarea
-          name="description"
-          placeholder="Description"
-          value={formData.description}
-          onChange={handleChange}
-          required
-        />
+          <input
+            className='auth-input'
+            type='date'
+            name='event_date'
+            value={formData.event_date}
+            onChange={handleChange}
+            required
+          />
 
-        <br />
-        <br />
+          <input
+            className='auth-input'
+            type='text'
+            name='venue'
+            placeholder='Venue'
+            value={formData.venue}
+            onChange={handleChange}
+            required
+          />
 
-        <input
-          type="date"
-          name="event_date"
-          value={formData.event_date}
-          onChange={handleChange}
-          required
-        />
+          <input
+            className='auth-input'
+            type='number'
+            name='price'
+            placeholder='Price'
+            value={formData.price}
+            onChange={handleChange}
+            required
+          />
 
-        <br />
-        <br />
+          <input
+            className='auth-input'
+            type='number'
+            name='total_tickets'
+            placeholder='Total Tickets'
+            value={formData.total_tickets}
+            onChange={handleChange}
+            required
+          />
 
-        <input
-          type="text"
-          name="venue"
-          placeholder="Venue"
-          value={formData.venue}
-          onChange={handleChange}
-          required
-        />
-
-        <br />
-        <br />
-
-        <input
-          type="number"
-          name="price"
-          placeholder="Price"
-          value={formData.price}
-          onChange={handleChange}
-          required
-        />
-
-        <br />
-        <br />
-
-        <input
-          type="number"
-          name="total_tickets"
-          placeholder="Total Tickets"
-          value={formData.total_tickets}
-          onChange={handleChange}
-          required
-        />
-
-        <br />
-        <br />
-
-        <button type="submit">Create Event</button>
-      </form>
+          <button
+            className='auth-button'
+            type='submit'
+          >
+            Create Event
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

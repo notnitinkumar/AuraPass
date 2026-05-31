@@ -1,6 +1,6 @@
 import { useState } from "react";
 import api from "../services/api";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import '../styles/auth.css';
 
 function Login() {
@@ -81,6 +81,11 @@ function Login() {
             Login
           </button>
         </form>
+        <div className="auth-footer">
+          <p>
+            Don't have an account? <Link to="/register">Register</Link>
+          </p>
+        </div>
       </div>
     </div>
   );

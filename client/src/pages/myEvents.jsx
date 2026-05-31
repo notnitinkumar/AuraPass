@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
+import '../styles/myEvents.css';
 
 function MyEvents() {
   const [events, setEvents] = useState([]);
@@ -29,32 +30,37 @@ function MyEvents() {
   }, []);
 
   if (loading) {
-    return <h2>Loading events...</h2>;
+    return <h2 className='loading-events'>Loading events...</h2>;
   }
 
   if (error) {
-    return <h2>{error}</h2>;
+    return <h2 className='error-events'>{error}</h2>;
   }
 
   return (
-    <div>
-      <h1>My Events</h1>
+    <div className='my-events-container'>
+      <h1 className='my-events-title'>My Events</h1>
 
       {events.length === 0 ? (
-        <p>No events found.</p>
+        <p className='no-events-message'>No events found.</p>
       ) : (
-        events.map((event) => (
-          <div key={event.id}>
-            <h2>{event.title}</h2>
-            <p>{event.description}</p>
-            <p>Venue: {event.venue}</p>
-            <p>Date: {event.event_date}</p>
-            <p>Price: ₹{event.price}</p>
-            <p>Total Tickets: {event.total_tickets}</p>
-            <p>Available Tickets: {event.available_tickets}</p>
-            <hr />
-          </div>
-        ))
+        <div className='events-grid'>
+          {events.map((event) => (
+            <div key={event.id} className='my-event-card'>
+              <h2>{event.title}</h2>
+              <p>{event.description}</p>
+              <p><strong>Venue:</strong> {event.venue}</p>
+              <p><strong>Date:</strong> {event.event_date}</p>
+              <p><strong>Price:</strong> ₹{event.price}</p>
+              <p><strong>Total Tickets:</strong> {event.total_tickets}</p>
+              <p><strong>Available Tickets:</strong> {event.available_tickets}</p>
+
+              <span className='event-stat'>
+                {event.available_tickets} Tickets Available
+              </span>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
