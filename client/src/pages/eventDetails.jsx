@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../services/api';
+import '../styles/eventDetails.css';
 
 function EventDetails() {
   const { id } = useParams();
@@ -54,38 +55,44 @@ function EventDetails() {
   };
 
   if (loading) {
-    return <h2>Loading event...</h2>;
+    return <h2 className='loading-text'>Loading event...</h2>;
   }
 
   if (error) {
-    return <h2>{error}</h2>;
+    return <h2 className='error-text'>{error}</h2>;
   }
 
   return (
-    <div>
-      <h1>{event.title}</h1>
+    <div className='event-details-container'>
+      <div className='event-details-card'>
+        <h1>{event.title}</h1>
 
-      <p>{event.description}</p>
-      <p>Venue: {event.venue}</p>
-      <p>Date: {event.event_date}</p>
-      <p>Price: ₹{event.price}</p>
-      <p>Available Tickets: {event.available_tickets}</p>
+        <p>{event.description}</p>
+        <p><strong>Venue:</strong> {event.venue}</p>
+        <p><strong>Date:</strong> {event.event_date}</p>
+        <p><strong>Price:</strong> ₹{event.price}</p>
+        <p><strong>Available Tickets:</strong> {event.available_tickets}</p>
 
-      <hr />
+        <div className='booking-section'>
+          <h3>Book Tickets</h3>
 
-      <h3>Book Tickets</h3>
+          <input
+            className='booking-input'
+            type='number'
+            min='1'
+            max={event.available_tickets}
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+          />
 
-      <input
-        type='number'
-        min='1'
-        max={event.available_tickets}
-        value={quantity}
-        onChange={(e) => setQuantity(e.target.value)}
-      />
-
-      <button onClick={handleBooking}>
-        Book Now
-      </button>
+          <button
+            className='book-button'
+            onClick={handleBooking}
+          >
+            Book Now
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

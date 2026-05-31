@@ -1,6 +1,7 @@
 import { useState } from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
+import '../styles/auth.css';
 
 function Login() {
   const navigate = useNavigate();
@@ -47,36 +48,40 @@ function Login() {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
+    <div className='auth-container'>
+      <div className='auth-card'>
+        <h1>Login</h1>
 
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) =>
-            setEmail(e.target.value)
-          }
-        />
+        <form
+          className='auth-form'
+          onSubmit={handleLogin}
+        >
+          <input
+            className='auth-input'
+            type='email'
+            placeholder='Email'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-        <br />
+          <input
+            className='auth-input'
+            type='password'
+            placeholder='Password'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) =>
-            setPassword(e.target.value)
-          }
-        />
-
-        <br />
-
-        <button type="submit">
-          Login
-        </button>
-      </form>
+          <button
+            className='auth-button'
+            type='submit'
+          >
+            Login
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

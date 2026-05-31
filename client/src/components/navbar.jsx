@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import '../styles/navbar.css';
 
 function Navbar() {
   const navigate = useNavigate();
@@ -14,28 +15,13 @@ function Navbar() {
   };
 
   return (
-    <nav
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "1rem 2rem",
-        borderBottom: "1px solid #ddd",
-        marginBottom: "2rem",
-      }}
-    >
-      <div>
-        <h2 style={{ margin: 0 }}>AuraPass</h2>
+    <nav className="navbar">
+      <div className="navbar-brand">
+        <h2>AuraPass</h2>
         {token && <small>Welcome, {name}</small>}
       </div>
 
-      <div
-        style={{
-          display: "flex",
-          gap: "1rem",
-          alignItems: "center",
-        }}
-      >
+      <div className="navbar-links">
         <Link to="/events">Events</Link>
 
         {token ? (

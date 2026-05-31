@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../services/api';
 import { Link } from 'react-router-dom';
+import '../styles/events.css';
 
 function Events() {
   const [events, setEvents] = useState([]);
@@ -31,26 +32,31 @@ function Events() {
   }
 
   return (
-    <div>
-      <h1>Events</h1>
+    <div className='events-container'>
+      <h1 className='events-title'>Upcoming Events</h1>
 
       {events.length === 0 ? (
-        <p>No events available.</p>
+        <p className='no-events'>No events available.</p>
       ) : (
-        events.map((event) => (
-          <div key={event.id}>
-            <h2>{event.title}</h2>
-            <p>{event.description}</p>
-            <p>Venue: {event.venue}</p>
-            <p>Date: {event.event_date}</p>
-            <p>Price: ₹{event.price}</p>
-            <p>Available Tickets: {event.available_tickets}</p>
-            <Link to={`/events/${event.id}`}>
-              View Details
-            </Link>
-            <hr />
-          </div>
-        ))
+        <div className='events-grid'>
+          {events.map((event) => (
+            <div key={event.id} className='event-card'>
+              <h2>{event.title}</h2>
+              <p>{event.description}</p>
+              <p><strong>Venue:</strong> {event.venue}</p>
+              <p><strong>Date:</strong> {event.event_date}</p>
+              <p><strong>Price:</strong> ₹{event.price}</p>
+              <p><strong>Available:</strong> {event.available_tickets}</p>
+
+              <Link
+                to={`/events/${event.id}`}
+                className='event-link'
+              >
+                View Details
+              </Link>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
