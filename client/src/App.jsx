@@ -7,6 +7,8 @@ import CreateEvent from './pages/createEvent';
 import Navbar from './components/navbar';
 import Login from './pages/login';
 import Register from './pages/register';
+import ProtectedRoute from './components/protectedRoute';
+import OrganizerRoute from './components/organizerRoute';
 
 function App() {
   return (
@@ -16,9 +18,30 @@ function App() {
         <Route path="/" element={<Events />} />
         <Route path='/events' element={<Events />} />
         <Route path='/events/:id' element={<EventDetails />} />
-        <Route path="/my-bookings" element={<MyBookings />} />
-        <Route path="/my-events" element={<MyEvents />} />
-        <Route path="/create-event" element={<CreateEvent />} />
+        <Route
+          path="/my-bookings"
+          element={
+            <ProtectedRoute>
+              <MyBookings />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-events"
+          element={
+            <OrganizerRoute>
+              <MyEvents />
+            </OrganizerRoute>
+          }
+        />
+        <Route
+          path="/create-event"
+          element={
+            <OrganizerRoute>
+              <CreateEvent />
+            </OrganizerRoute>
+          }
+        />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>

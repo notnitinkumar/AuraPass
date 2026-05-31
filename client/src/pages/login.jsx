@@ -24,6 +24,16 @@ function Login() {
         response.data.token
       );
 
+      localStorage.setItem(
+        'role',
+        response.data.user.role
+      );
+
+      localStorage.setItem(
+        'name',
+        response.data.user.name
+      );
+
       navigate('/events');
 
     } catch (error) {

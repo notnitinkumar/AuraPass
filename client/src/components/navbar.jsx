@@ -2,9 +2,14 @@ import { Link, useNavigate } from "react-router-dom";
 
 function Navbar() {
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+  const role = localStorage.getItem('role');
+  const name = localStorage.getItem('name');
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('name');
     navigate("/events");
   };
 
@@ -19,7 +24,10 @@ function Navbar() {
         marginBottom: "2rem",
       }}
     >
-      <h2>AuraPass</h2>
+      <div>
+        <h2 style={{ margin: 0 }}>AuraPass</h2>
+        {token && <small>Welcome, {name}</small>}
+      </div>
 
       <div
         style={{
@@ -29,11 +37,26 @@ function Navbar() {
         }}
       >
         <Link to="/events">Events</Link>
-        <Link to="/my-bookings">My Bookings</Link>
-        <Link to="/my-events">My Events</Link>
-        <Link to="/create-event">Create Event</Link>
 
-        <button onClick={handleLogout}>Logout</button>
+        {token ? (
+          <>
+            <Link to="/my-bookings">My Bookings</Link>
+
+            {(role === 'ADMIN' || role === 'ORGANIZER') && (
+              <>
+                <Link to="/my-events">My Events</Link>
+                <Link to="/create-event">Create Event</Link>
+              </>
+            )}
+
+            <button onClick={handleLogout}>Logout</button>
+          </>
+        ) : (
+          <>
+            <Link to="/login">Login</Link>
+            <Link to="/register">Register</Link>
+          </>
+        )}
       </div>
     </nav>
   );
