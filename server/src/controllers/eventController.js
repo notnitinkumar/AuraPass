@@ -187,6 +187,14 @@ export const deleteEvent = async (req, res) => {
       });
     }
 
+    await db.query(
+      `DELETE t FROM tickets t
+       INNER JOIN bookings b ON t.booking_id = b.id
+       WHERE b.event_id = ?`,
+      [id],
+    );
+
+    await db.query("DELETE FROM bookings WHERE event_id = ?", [id]);
     await db.query("DELETE FROM events WHERE id = ?", [id]);
 
     res.status(200).json({
