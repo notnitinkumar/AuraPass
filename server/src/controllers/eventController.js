@@ -3,7 +3,10 @@ import db from "../db/db.js";
 export const getAllEvents = async (req, res) => {
   try {
     const [events] = await db.query(
-      "SELECT * FROM events ORDER BY event_date ASC",
+      `SELECT *
+       FROM events
+       WHERE DATE(event_date) >= CURDATE()
+       ORDER BY event_date ASC`,
     );
 
     res.status(200).json({
