@@ -69,6 +69,7 @@ function EventDetails() {
 
         <p>{event.description}</p>
         <p><strong>Venue:</strong> {event.venue}</p>
+        <p><strong>Category:</strong> {event.category}</p>
         <p><strong>Date:</strong> {event.event_date}</p>
         <p><strong>Price:</strong> ₹{event.price}</p>
         <p><strong>Available Tickets:</strong> {event.available_tickets}</p>

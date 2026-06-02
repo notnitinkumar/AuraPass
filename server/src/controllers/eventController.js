@@ -45,15 +45,22 @@ export const getEventById = async (req, res) => {
 
 export const createEvent = async (req, res) => {
   try {
-    const { title, description, event_date, venue, price, total_tickets } =
-      req.body;
+    const {
+      title,
+      description,
+      event_date,
+      venue,
+      price,
+      total_tickets,
+      category,
+    } = req.body;
 
     const organizer_id = req.user.userId;
 
     const [result] = await db.query(
       `INSERT INTO events
-      (title, description, event_date, venue, price, total_tickets, available_tickets, organizer_id)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      (title, description, event_date, venue, price, total_tickets, available_tickets, organizer_id, category)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         title,
         description,
@@ -63,6 +70,7 @@ export const createEvent = async (req, res) => {
         total_tickets,
         total_tickets,
         organizer_id,
+        category,
       ],
     );
 
@@ -82,7 +90,15 @@ export const createEvent = async (req, res) => {
 export const updateEvent = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, event_date, venue, price, total_tickets } = req.body;
+    const {
+      title,
+      description,
+      event_date,
+      venue,
+      price,
+      total_tickets,
+      category,
+    } = req.body;
 
     const [events] = await db.query(
       'SELECT * FROM events WHERE id = ?',
@@ -119,7 +135,8 @@ export const updateEvent = async (req, res) => {
            venue = ?,
            price = ?,
            total_tickets = ?,
-           available_tickets = ?
+           available_tickets = ?,
+           category = ?
        WHERE id = ?`,
       [
         title,
@@ -129,6 +146,7 @@ export const updateEvent = async (req, res) => {
         price,
         total_tickets,
         availableTickets,
+        category,
         id
       ]
     );

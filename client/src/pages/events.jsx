@@ -7,6 +7,7 @@ function Events() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('ALL');
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-IN', {
@@ -31,6 +32,13 @@ function Events() {
     fetchEvents();
   }, []);
 
+  const filteredEvents =
+    selectedCategory === 'ALL'
+      ? events
+      : events.filter(
+        (event) => event.category.toUpperCase() === selectedCategory
+        );
+
   if (loading) {
     return <h2>Loading events...</h2>;
   }
@@ -52,18 +60,44 @@ function Events() {
       </section>
 
       <h1 className='events-title'>Upcoming Events</h1>
+      <div className='category-filters'>
+        {[
+          'ALL',
+          'TECH',
+          'WORKSHOP',
+          'CULTURAL',
+          'SPORTS',
+          'MUSIC',
+          'SEMINAR',
+          'OTHER',
+        ].map((category) => (
+          <button
+            key={category}
+            type='button'
+            className={`category-filter-btn ${selectedCategory === category ? 'active' : ''}`}
+            onClick={() => setSelectedCategory(category)}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
 
-      {events.length === 0 ? (
+      {filteredEvents.length === 0 ? (
         <p className='no-events'>No events available.</p>
       ) : (
         <div className='events-grid'>
-          {events.map((event) => (
+          {filteredEvents.map((event) => (
             <div key={event.id} className='event-card'>
               <img
                 src={`https://picsum.photos/seed/${event.id}/600/400`}
                 alt={event.title}
                 className='event-image'
               />
+
+              <span className='event-category'>
+                {event.category}
+              </span>
+
               <h2>{event.title}</h2>
 
               <p>{event.description}</p>

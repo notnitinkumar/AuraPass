@@ -13,6 +13,7 @@ function CreateEvent() {
     venue: "",
     price: "",
     total_tickets: "",
+    category: "TECH",
   });
 
   const handleChange = (e) => {
@@ -95,6 +96,21 @@ function CreateEvent() {
             onChange={handleChange}
             required
           />
+          <select
+            className='auth-input'
+            name='category'
+            value={formData.category}
+            onChange={handleChange}
+            required
+          >
+            <option value='TECH'>Tech</option>
+            <option value='WORKSHOP'>Workshop</option>
+            <option value='CULTURAL'>Cultural</option>
+            <option value='SPORTS'>Sports</option>
+            <option value='MUSIC'>Music</option>
+            <option value='SEMINAR'>Seminar</option>
+            <option value='OTHER'>Other</option>
+          </select>
 
           <input
             className='auth-input'

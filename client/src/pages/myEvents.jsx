@@ -50,6 +50,7 @@ function MyEvents() {
               <h2>{event.title}</h2>
               <p>{event.description}</p>
               <p><strong>Venue:</strong> {event.venue}</p>
+              <p><strong>Category:</strong> {event.category}</p>
               <p><strong>Date:</strong> {event.event_date}</p>
               <p><strong>Price:</strong> ₹{event.price}</p>
               <p><strong>Total Tickets:</strong> {event.total_tickets}</p>
