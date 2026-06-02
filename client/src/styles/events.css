@@ -148,6 +148,24 @@
   font-size: 0.95rem;
 }
 
+.event-search {
+  background: #f9fafb85;
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 1.5rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid #e2e2e2;
+  border-radius: 12px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.event-search:focus {
+  border-color: #6366f1;
+
+}
+
 @media (max-width: 768px) {
   .events-grid {
     grid-template-columns: 1fr;

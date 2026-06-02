@@ -8,6 +8,7 @@ function Events() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-IN', {
@@ -32,12 +33,17 @@ function Events() {
     fetchEvents();
   }, []);
 
-  const filteredEvents =
-    selectedCategory === 'ALL'
-      ? events
-      : events.filter(
-        (event) => event.category.toUpperCase() === selectedCategory
-        );
+  const filteredEvents = events.filter((event) => {
+    const matchesCategory =
+      selectedCategory === 'ALL' ||
+      event.category.toUpperCase() === selectedCategory;
+
+    const matchesSearch = event.title
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+
+    return matchesCategory && matchesSearch;
+  });
 
   if (loading) {
     return <h2>Loading events...</h2>;
@@ -60,6 +66,13 @@ function Events() {
       </section>
 
       <h1 className='events-title'>Upcoming Events</h1>
+      <input
+        type='text'
+        className='event-search'
+        placeholder='Search events by title...'
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
       <div className='category-filters'>
         {[
           'ALL',
@@ -83,7 +96,7 @@ function Events() {
       </div>
 
       {filteredEvents.length === 0 ? (
-        <p className='no-events'>No events available.</p>
+        <p className='no-events'>No matching events found.</p>
       ) : (
         <div className='events-grid'>
           {filteredEvents.map((event) => (
