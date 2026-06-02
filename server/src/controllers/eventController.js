@@ -56,11 +56,12 @@ export const createEvent = async (req, res) => {
     } = req.body;
 
     const organizer_id = req.user.userId;
+    const image_url = req.file ? `/uploads/${req.file.filename}` : null;
 
     const [result] = await db.query(
       `INSERT INTO events
-      (title, description, event_date, venue, price, total_tickets, available_tickets, organizer_id, category)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      (title, description, event_date, venue, price, total_tickets, available_tickets, organizer_id, category, image_url)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         title,
         description,
@@ -71,6 +72,7 @@ export const createEvent = async (req, res) => {
         total_tickets,
         organizer_id,
         category,
+        image_url,
       ],
     );
 
@@ -99,28 +101,23 @@ export const updateEvent = async (req, res) => {
       total_tickets,
       category,
     } = req.body;
+    const image_url = req.file ? `/uploads/${req.file.filename}` : null;
 
-    const [events] = await db.query(
-      'SELECT * FROM events WHERE id = ?',
-      [id]
-    );
+    const [events] = await db.query("SELECT * FROM events WHERE id = ?", [id]);
 
     if (events.length === 0) {
       return res.status(404).json({
         success: false,
-        message: 'Event not found'
+        message: "Event not found",
       });
     }
 
     const event = events[0];
 
-    if (
-      req.user.role !== 'ADMIN' &&
-      event.organizer_id !== req.user.userId
-    ) {
+    if (req.user.role !== "ADMIN" && event.organizer_id !== req.user.userId) {
       return res.status(403).json({
         success: false,
-        message: 'You are not allowed to update this event'
+        message: "You are not allowed to update this event",
       });
     }
 
@@ -136,7 +133,8 @@ export const updateEvent = async (req, res) => {
            price = ?,
            total_tickets = ?,
            available_tickets = ?,
-           category = ?
+           category = ?,
+           image_url = COALESCE(?, image_url)
        WHERE id = ?`,
       [
         title,
@@ -147,18 +145,19 @@ export const updateEvent = async (req, res) => {
         total_tickets,
         availableTickets,
         category,
-        id
-      ]
+        image_url,
+        id,
+      ],
     );
 
     res.status(200).json({
       success: true,
-      message: 'Event updated successfully'
+      message: "Event updated successfully",
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -167,43 +166,34 @@ export const deleteEvent = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const [events] = await db.query(
-      'SELECT * FROM events WHERE id = ?',
-      [id]
-    );
+    const [events] = await db.query("SELECT * FROM events WHERE id = ?", [id]);
 
     if (events.length === 0) {
       return res.status(404).json({
         success: false,
-        message: 'Event not found'
+        message: "Event not found",
       });
     }
 
     const event = events[0];
 
-    if (
-      req.user.role !== 'ADMIN' &&
-      event.organizer_id !== req.user.userId
-    ) {
+    if (req.user.role !== "ADMIN" && event.organizer_id !== req.user.userId) {
       return res.status(403).json({
         success: false,
-        message: 'You are not allowed to delete this event'
+        message: "You are not allowed to delete this event",
       });
     }
 
-    await db.query(
-      'DELETE FROM events WHERE id = ?',
-      [id]
-    );
+    await db.query("DELETE FROM events WHERE id = ?", [id]);
 
     res.status(200).json({
       success: true,
-      message: 'Event deleted successfully'
+      message: "Event deleted successfully",
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -217,7 +207,7 @@ export const getMyEvents = async (req, res) => {
        FROM events
        WHERE organizer_id = ?
        ORDER BY event_date ASC`,
-      [organizer_id]
+      [organizer_id],
     );
 
     res.status(200).json({

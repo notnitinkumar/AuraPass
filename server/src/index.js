@@ -49,6 +49,7 @@ app.use("/users", userRoutes);
 app.use("/auth", authRoutes);
 app.use("/events", eventRoutes);
 app.use('/bookings', bookingRoutes);
+app.use("/uploads", express.static("uploads"));
 
 const PORT = process.env.PORT || 3000;
 

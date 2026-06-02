@@ -16,11 +16,17 @@ function CreateEvent() {
     category: "TECH",
   });
 
+  const [image, setImage] = useState(null);
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0] || null);
   };
 
   const handleSubmit = async (e) => {
@@ -29,19 +35,22 @@ function CreateEvent() {
     try {
       const token = localStorage.getItem("token");
 
-      await api.post(
-        "/events",
-        {
-          ...formData,
-          price: Number(formData.price),
-          total_tickets: Number(formData.total_tickets),
+      const eventData = new FormData();
+
+      Object.entries(formData).forEach(([key, value]) => {
+        eventData.append(key, value);
+      });
+
+      if (image) {
+        eventData.append('image', image);
+      }
+
+      await api.post('/events', eventData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      });
 
       alert("Event created successfully");
       navigate("/my-events");
@@ -111,6 +120,13 @@ function CreateEvent() {
             <option value='SEMINAR'>Seminar</option>
             <option value='OTHER'>Other</option>
           </select>
+          <input
+            className='auth-input'
+            type='file'
+            name='image'
+            accept='image/*'
+            onChange={handleImageChange}
+          />
 
           <input
             className='auth-input'

@@ -89,7 +89,11 @@ function Events() {
           {filteredEvents.map((event) => (
             <div key={event.id} className='event-card'>
               <img
-                src={`https://picsum.photos/seed/${event.id}/600/400`}
+                src={
+                  event.image_url
+                    ? `http://localhost:3000${event.image_url}`
+                    : `https://picsum.photos/seed/${event.id}/600/400`
+                }
                 alt={event.title}
                 className='event-image'
               />
