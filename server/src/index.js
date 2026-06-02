@@ -8,6 +8,10 @@ import { verifyToken } from "./middleware/authMiddleware.js";
 import { isAdmin } from "./middleware/roleMiddleware.js";
 import eventRoutes from "./routes/eventRoutes.js";
 import bookingRoutes from './routes/bookingRoutes.js';
+import { Server } from "socket.io";
+import http from "http";
+import { initSocket } from "./socket.js";
+
 
 dotenv.config();
 
@@ -53,6 +57,25 @@ app.use("/uploads", express.static("uploads"));
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+  },
+});
+
+initSocket(io);
+
+io.on("connection", (socket) => {
+  console.log("User connected:", socket.id);
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected");
+  });
+});
+
+server.listen(PORT, () => {
+  console.log(`Server running on ${PORT}`);
 });

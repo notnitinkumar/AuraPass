@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../services/api';
+import socket from '../socket';
 import '../styles/eventDetails.css';
 
 function EventDetails() {
@@ -28,6 +29,25 @@ function EventDetails() {
     fetchEvent();
   }, [id]);
 
+  useEffect(() => {
+    socket.on('ticketsUpdated', (data) => {
+      if (Number(data.eventId) === Number(id)) {
+        setEvent((prev) => {
+          if (!prev) return prev;
+
+          return {
+            ...prev,
+            available_tickets: data.availableTickets,
+          };
+        });
+      }
+    });
+
+    return () => {
+      socket.off('ticketsUpdated');
+    };
+  }, [id]);
+
   const handleBooking = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -46,6 +66,7 @@ function EventDetails() {
       );
 
       alert('Booking created successfully');
+      setQuantity(1);
     } catch (err) {
       alert(
         err.response?.data?.message ||

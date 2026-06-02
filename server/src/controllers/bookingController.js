@@ -1,4 +1,5 @@
 import db from "../db/db.js";
+import { getIo } from "../socket.js";
 
 export const createBooking = async (req, res) => {
   try {
@@ -47,6 +48,14 @@ export const createBooking = async (req, res) => {
        WHERE id = ?`,
       [quantity, event_id],
     );
+    const updatedAvailableTickets =
+      event.available_tickets - quantity;
+
+    // console.log("Reached emit code");
+    getIo().emit("ticketsUpdated", {
+      eventId: event_id,
+      availableTickets: updatedAvailableTickets,
+    });
 
     for (let i = 1; i <= quantity; i++) {
       const ticketCode = `AURA-${bookingResult.insertId}-${Date.now()}-${i}`;

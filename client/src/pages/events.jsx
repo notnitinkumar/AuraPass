@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '../services/api';
+import socket from '../socket';
 import { Link } from 'react-router-dom';
 import '../styles/events.css';
 
@@ -31,6 +32,27 @@ function Events() {
     };
 
     fetchEvents();
+  }, []);
+
+  useEffect(() => {
+    socket.on('ticketsUpdated', (data) => {
+      console.log('Received socket update:', data);
+
+      setEvents((prev) =>
+        prev.map((event) =>
+          Number(event.id) === Number(data.eventId)
+            ? {
+                ...event,
+                available_tickets: data.availableTickets,
+              }
+            : event
+        )
+      );
+    });
+
+    return () => {
+      socket.off('ticketsUpdated');
+    };
   }, []);
 
   const filteredEvents = events.filter((event) => {
