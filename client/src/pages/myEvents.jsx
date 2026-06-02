@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import '../styles/myEvents.css';
 
@@ -6,6 +7,34 @@ function MyEvents() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleEdit = (id) => {
+    navigate(`/events/edit/${id}`);
+  };
+
+  const handleDelete = async (id) => {
+    const confirmed = window.confirm(
+      'Are you sure you want to delete this event?'
+    );
+
+    if (!confirmed) return;
+
+    try {
+      const token = localStorage.getItem('token');
+
+      await api.delete(`/events/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setEvents((prev) => prev.filter((event) => event.id !== id));
+    } catch (err) {
+      alert('Failed to delete event');
+    }
+  };
 
   useEffect(() => {
     const fetchMyEvents = async () => {
@@ -59,6 +88,21 @@ function MyEvents() {
               <span className='event-stat'>
                 {event.available_tickets} Tickets Available
               </span>
+              <div className='event-actions'>
+                <button
+                  className='edit-event-btn'
+                  onClick={() => handleEdit(event.id)}
+                >
+                  Edit
+                </button>
+
+                <button
+                  className='delete-event-btn'
+                  onClick={() => handleDelete(event.id)}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           ))}
         </div>
