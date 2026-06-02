@@ -7,27 +7,56 @@ function MyBookings() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const token = localStorage.getItem("token");
+  const fetchBookings = async () => {
+    try {
+      const token = localStorage.getItem('token');
 
-        const response = await api.get("/bookings/my-bookings", {
+      const response = await api.get('/bookings/my-bookings', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setBookings(response.data.bookings);
+    } catch (err) {
+      setError('Failed to load bookings');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchBookings();
+  }, []);
+
+  const handleCancelBooking = async (bookingId) => {
+    const confirmed = window.confirm(
+      'Are you sure you want to cancel this booking?'
+    );
+
+    if (!confirmed) return;
+
+    try {
+      const token = localStorage.getItem('token');
+
+      await api.put(
+        `/bookings/${bookingId}/cancel`,
+        {},
+        {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
+        }
+      );
 
-        setBookings(response.data.bookings);
-      } catch (err) {
-        setError("Failed to load bookings");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchBookings();
-  }, []);
+      await fetchBookings();
+    } catch (error) {
+      alert(
+        error.response?.data?.message ||
+          'Failed to cancel booking'
+      );
+    }
+  };
 
   if (loading) {
     return <h2 className='loading-bookings'>Loading bookings...</h2>;
@@ -54,9 +83,20 @@ function MyBookings() {
               <p><strong>Total Amount:</strong> ₹{booking.total_amount}</p>
               <p><strong>Booking Date:</strong> {booking.booking_date}</p>
 
-              <span className='booking-status'>
+              <span
+                className={`booking-status ${booking.status.toLowerCase()}`}
+              >
                 {booking.status}
               </span>
+
+              {booking.status === 'CONFIRMED' && (
+                <button
+                  className='cancel-booking-btn'
+                  onClick={() => handleCancelBooking(booking.id)}
+                >
+                  Cancel Booking
+                </button>
+              )}
             </div>
           ))}
         </div>

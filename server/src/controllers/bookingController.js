@@ -114,3 +114,65 @@ export const getMyBookings = async (req, res) => {
     });
   }
 };
+
+export const cancelBooking = async (req, res) => {
+  try {
+    const bookingId = req.params.id;
+    const user_id = req.user.userId;
+
+    const [bookings] = await db.query(
+      `SELECT * FROM bookings WHERE id = ? AND user_id = ?`,
+      [bookingId, user_id],
+    );
+
+    if (bookings.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Booking not found',
+      });
+    }
+
+    const booking = bookings[0];
+
+    if (booking.status === 'CANCELLED') {
+      return res.status(400).json({
+        success: false,
+        message: 'Booking already cancelled',
+      });
+    }
+
+    await db.query(
+      `UPDATE bookings
+       SET status = 'CANCELLED'
+       WHERE id = ?`,
+      [bookingId],
+    );
+
+    await db.query(
+      `UPDATE events
+       SET available_tickets = available_tickets + ?
+       WHERE id = ?`,
+      [booking.quantity, booking.event_id],
+    );
+
+    const [events] = await db.query(
+      `SELECT available_tickets FROM events WHERE id = ?`,
+      [booking.event_id],
+    );
+
+    getIo().emit('ticketsUpdated', {
+      eventId: booking.event_id,
+      availableTickets: events[0].available_tickets,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'Booking cancelled successfully',
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
