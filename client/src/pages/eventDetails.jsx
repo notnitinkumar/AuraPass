@@ -12,6 +12,8 @@ function EventDetails() {
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [bookingLoading, setBookingLoading] = useState(false);
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -49,6 +51,7 @@ function EventDetails() {
 
   const handleBooking = async () => {
     try {
+      setBookingLoading(true);
       const token = localStorage.getItem('token');
       if (!token) {
         navigate('/login');
@@ -70,11 +73,14 @@ function EventDetails() {
 
       alert('Booking created successfully');
       setQuantity(1);
+      setShowBookingModal(false);
     } catch (err) {
       alert(
         err.response?.data?.message ||
         'Booking failed'
       );
+    } finally {
+      setBookingLoading(false);
     }
   };
 
@@ -112,11 +118,42 @@ function EventDetails() {
 
           <button
             className='book-button'
-            onClick={handleBooking}
+            onClick={() => setShowBookingModal(true)}
           >
             Book Now
           </button>
         </div>
+        {showBookingModal && (
+          <div className='booking-modal-overlay'>
+            <div className='booking-modal'>
+              <h2>Confirm Booking</h2>
+
+              <p><strong>Event:</strong> {event.title}</p>
+              <p><strong>Venue:</strong> {event.venue}</p>
+              <p><strong>Date:</strong> {event.event_date}</p>
+              <p><strong>Price per Ticket:</strong> ₹{event.price}</p>
+              <p><strong>Tickets:</strong> {quantity}</p>
+              <p><strong>Total:</strong> ₹{Number(event.price) * Number(quantity)}</p>
+
+              <div className='booking-actions'>
+                <button
+                  className='book-button'
+                  onClick={() => setShowBookingModal(false)}
+                >
+                  Cancel
+                </button>
+
+                <button
+                  className='book-button'
+                  onClick={handleBooking}
+                  disabled={bookingLoading}
+                >
+                  {bookingLoading ? 'Booking...' : 'Confirm Booking'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
