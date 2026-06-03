@@ -155,7 +155,7 @@ function Events() {
                 <img
                   src={
                     event.image_url
-                      ? `http://localhost:3000${event.image_url}`
+                      ? `${import.meta.env.VITE_API_URL}${event.image_url}`
                       : `https://picsum.photos/seed/${event.id}/600/400`
                   }
                   alt={event.title}
@@ -191,5 +191,3 @@ function Events() {
 }
 
 export default Events;
-
-
