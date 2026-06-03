@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import api from '../services/api';
 import socket from '../socket';
 import '../styles/eventDetails.css';
-import AnimatedPage from '../components/AnimatedPage';
+import AnimatedPage from '../components/animatedPage';
 
 function EventDetails() {
   const { id } = useParams();

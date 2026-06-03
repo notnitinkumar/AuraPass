@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../services/api";
 import "../styles/auth.css";
-import AnimatedPage from '../components/AnimatedPage';
+import AnimatedPage from '../components/animatedPage';
 
 function Register() {
   const navigate = useNavigate();

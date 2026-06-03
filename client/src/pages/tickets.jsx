@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { QRCodeCanvas } from "qrcode.react";
 import api from "../services/api";
 import "../styles/tickets.css";
-import AnimatedPage from '../components/AnimatedPage';
+import AnimatedPage from '../components/animatedPage';
 
 function Tickets() {
   const { bookingId } = useParams();

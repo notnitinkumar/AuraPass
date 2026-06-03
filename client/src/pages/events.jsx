@@ -3,7 +3,7 @@ import api from '../services/api';
 import socket from '../socket';
 import { Link } from 'react-router-dom';
 import '../styles/events.css';
-import AnimatedPage from '../components/AnimatedPage';
+import AnimatedPage from '../components/animatedPage';
 import { motion } from 'framer-motion';
 
 function Events() {
@@ -191,3 +191,5 @@ function Events() {
 }
 
 export default Events;
+
+
