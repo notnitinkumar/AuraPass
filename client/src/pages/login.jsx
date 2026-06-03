@@ -2,6 +2,7 @@ import { useState } from "react";
 import api from "../services/api";
 import { Link, useNavigate } from "react-router-dom";
 import '../styles/auth.css';
+import AnimatedPage from '../components/AnimatedPage';
 
 function Login() {
   const navigate = useNavigate();
@@ -48,46 +49,48 @@ function Login() {
   };
 
   return (
-    <div className='auth-container'>
-      <div className='auth-card'>
-        <h1>Login</h1>
+    <AnimatedPage>
+      <div className='auth-container'>
+        <div className='auth-card'>
+          <h1>Login</h1>
 
-        <form
-          className='auth-form'
-          onSubmit={handleLogin}
-        >
-          <input
-            className='auth-input'
-            type='email'
-            placeholder='Email'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-
-          <input
-            className='auth-input'
-            type='password'
-            placeholder='Password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-
-          <button
-            className='auth-button'
-            type='submit'
+          <form
+            className='auth-form'
+            onSubmit={handleLogin}
           >
-            Login
-          </button>
-        </form>
-        <div className="auth-footer">
-          <p>
-            Don't have an account? <Link to="/register">Register</Link>
-          </p>
+            <input
+              className='auth-input'
+              type='email'
+              placeholder='Email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+
+            <input
+              className='auth-input'
+              type='password'
+              placeholder='Password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+
+            <button
+              className='auth-button'
+              type='submit'
+            >
+              Login
+            </button>
+          </form>
+          <div className="auth-footer">
+            <p>
+              Don't have an account? <Link to="/register">Register</Link>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </AnimatedPage>
   );
 }
 

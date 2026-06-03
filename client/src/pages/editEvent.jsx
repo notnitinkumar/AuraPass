@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../services/api";
 import "../styles/auth.css";
+import AnimatedPage from '../components/AnimatedPage';
 
 function EditEvent() {
   const { id } = useParams();
@@ -88,11 +89,16 @@ function EditEvent() {
   };
 
   if (loading) {
-    return <h2>Loading event...</h2>;
+    return (
+      <AnimatedPage>
+        <h2>Loading event...</h2>
+      </AnimatedPage>
+    );
   }
 
   return (
-    <div className="auth-container">
+    <AnimatedPage>
+      <div className="auth-container">
       <div className="auth-card">
         <h1>Edit Event</h1>
 
@@ -182,8 +188,9 @@ function EditEvent() {
             Update Event
           </button>
         </form>
-      </div>
-    </div>
+        </div>
+        </div>
+    </AnimatedPage>
   );
 }
 

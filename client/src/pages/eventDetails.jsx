@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import api from '../services/api';
 import socket from '../socket';
 import '../styles/eventDetails.css';
+import AnimatedPage from '../components/AnimatedPage';
 
 function EventDetails() {
   const { id } = useParams();
@@ -85,77 +86,87 @@ function EventDetails() {
   };
 
   if (loading) {
-    return <h2 className='loading-text'>Loading event...</h2>;
+    return (
+      <AnimatedPage>
+        <h2 className='loading-text'>Loading event...</h2>
+      </AnimatedPage>
+    );
   }
 
   if (error) {
-    return <h2 className='error-text'>{error}</h2>;
+    return (
+      <AnimatedPage>
+        <h2 className='error-text'>{error}</h2>
+      </AnimatedPage>
+    );
   }
 
   return (
-    <div className='event-details-container'>
-      <div className='event-details-card'>
-        <h1>{event.title}</h1>
+    <AnimatedPage>
+      <div className='event-details-container'>
+        <div className='event-details-card'>
+          <h1>{event.title}</h1>
 
-        <p>{event.description}</p>
-        <p><strong>Venue:</strong> {event.venue}</p>
-        <p><strong>Category:</strong> {event.category}</p>
-        <p><strong>Date:</strong> {event.event_date}</p>
-        <p><strong>Price:</strong> ₹{event.price}</p>
-        <p><strong>Available Tickets:</strong> {event.available_tickets}</p>
+          <p>{event.description}</p>
+          <p><strong>Venue:</strong> {event.venue}</p>
+          <p><strong>Category:</strong> {event.category}</p>
+          <p><strong>Date:</strong> {event.event_date}</p>
+          <p><strong>Price:</strong> ₹{event.price}</p>
+          <p><strong>Available Tickets:</strong> {event.available_tickets}</p>
 
-        <div className='booking-section'>
-          <h3>Book Tickets</h3>
+          <div className='booking-section'>
+            <h3>Book Tickets</h3>
 
-          <input
-            className='booking-input'
-            type='number'
-            min='1'
-            max={event.available_tickets}
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-          />
+            <input
+              className='booking-input'
+              type='number'
+              min='1'
+              max={event.available_tickets}
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+            />
 
-          <button
-            className='book-button'
-            onClick={() => setShowBookingModal(true)}
-          >
-            Book Now
-          </button>
-        </div>
-        {showBookingModal && (
-          <div className='booking-modal-overlay'>
-            <div className='booking-modal'>
-              <h2>Confirm Booking</h2>
+            <button
+              className='book-button'
+              onClick={() => setShowBookingModal(true)}
+            >
+              Book Now
+            </button>
+          </div>
+          {showBookingModal && (
+            <div className='booking-modal-overlay'>
+              <div className='booking-modal'>
+                <h2>Confirm Booking</h2>
 
-              <p><strong>Event:</strong> {event.title}</p>
-              <p><strong>Venue:</strong> {event.venue}</p>
-              <p><strong>Date:</strong> {event.event_date}</p>
-              <p><strong>Price per Ticket:</strong> ₹{event.price}</p>
-              <p><strong>Tickets:</strong> {quantity}</p>
-              <p><strong>Total:</strong> ₹{Number(event.price) * Number(quantity)}</p>
+                <p><strong>Event:</strong> {event.title}</p>
+                <p><strong>Venue:</strong> {event.venue}</p>
+                <p><strong>Date:</strong> {event.event_date}</p>
+                <p><strong>Price per Ticket:</strong> ₹{event.price}</p>
+                <p><strong>Tickets:</strong> {quantity}</p>
+                <p><strong>Total:</strong> ₹{Number(event.price) * Number(quantity)}</p>
 
-              <div className='booking-actions'>
-                <button
-                  className='book-button'
-                  onClick={() => setShowBookingModal(false)}
-                >
-                  Cancel
-                </button>
+                <div className='booking-actions'>
+                  <button
+                    className='book-button'
+                    onClick={() => setShowBookingModal(false)}
+                  >
+                    Cancel
+                  </button>
 
-                <button
-                  className='book-button'
-                  onClick={handleBooking}
-                  disabled={bookingLoading}
-                >
-                  {bookingLoading ? 'Booking...' : 'Confirm Booking'}
-                </button>
+                  <button
+                    className='book-button'
+                    onClick={handleBooking}
+                    disabled={bookingLoading}
+                  >
+                    {bookingLoading ? 'Booking...' : 'Confirm Booking'}
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </AnimatedPage>
   );
 }
 

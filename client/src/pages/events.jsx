@@ -3,6 +3,8 @@ import api from '../services/api';
 import socket from '../socket';
 import { Link } from 'react-router-dom';
 import '../styles/events.css';
+import AnimatedPage from '../components/AnimatedPage';
+import { motion } from 'framer-motion';
 
 function Events() {
   const [events, setEvents] = useState([]);
@@ -68,95 +70,123 @@ function Events() {
   });
 
   if (loading) {
-    return <h2>Loading events...</h2>;
+    return (
+      <AnimatedPage>
+        <h2>Loading events...</h2>
+      </AnimatedPage>
+    );
   }
 
   if (error) {
-    return <h2>{error}</h2>;
+    return (
+      <AnimatedPage>
+        <h2>{error}</h2>
+      </AnimatedPage>
+    );
   }
 
   return (
-    <div className='events-container'>
-      <section className='hero-section'>
-        <h1 className='hero-title'>
-          Discover Amazing Events
-        </h1>
-
-        <p className='hero-subtitle'>
-          Find festivals, workshops, hackathons, conferences and more.
-        </p>
-      </section>
-
-      <h1 className='events-title'>Upcoming Events</h1>
-      <input
-        type='text'
-        className='event-search'
-        placeholder='Search events by title...'
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <div className='category-filters'>
-        {[
-          'ALL',
-          'TECH',
-          'WORKSHOP',
-          'CULTURAL',
-          'SPORTS',
-          'MUSIC',
-          'SEMINAR',
-          'OTHER',
-        ].map((category) => (
-          <button
-            key={category}
-            type='button'
-            className={`category-filter-btn ${selectedCategory === category ? 'active' : ''}`}
-            onClick={() => setSelectedCategory(category)}
+    <AnimatedPage>
+      <div className='events-container'>
+        <motion.section
+          className='hero-section'
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <motion.h1
+            className='hero-title'
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
           >
-            {category}
-          </button>
-        ))}
-      </div>
+            Discover Amazing Events
+          </motion.h1>
 
-      {filteredEvents.length === 0 ? (
-        <p className='no-events'>No matching events found.</p>
-      ) : (
-        <div className='events-grid'>
-          {filteredEvents.map((event) => (
-            <div key={event.id} className='event-card'>
-              <img
-                src={
-                  event.image_url
-                    ? `http://localhost:3000${event.image_url}`
-                    : `https://picsum.photos/seed/${event.id}/600/400`
-                }
-                alt={event.title}
-                className='event-image'
-              />
+          <motion.p
+            className='hero-subtitle'
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
+            Find festivals, workshops, hackathons, conferences and more.
+          </motion.p>
+        </motion.section>
 
-              <span className='event-category'>
-                {event.category}
-              </span>
-
-              <h2>{event.title}</h2>
-
-              <p>{event.description}</p>
-
-              <p>📍 {event.venue}</p>
-              <p>📅 {formatDate(event.event_date)}</p>
-              <p>🎟 ₹{event.price}</p>
-              <p>{event.available_tickets} tickets available</p>
-
-              <Link
-                to={`/events/${event.id}`}
-                className='event-link'
-              >
-                View Event →
-              </Link>
-            </div>
+        <h1 className='events-title'>Upcoming Events</h1>
+        <motion.input
+          type='text'
+          className='event-search'
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.4 }}
+          placeholder='Search events by title...'
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <div className='category-filters'>
+          {[
+            'ALL',
+            'TECH',
+            'WORKSHOP',
+            'CULTURAL',
+            'SPORTS',
+            'MUSIC',
+            'SEMINAR',
+            'OTHER',
+          ].map((category) => (
+            <button
+              key={category}
+              type='button'
+              className={`category-filter-btn ${selectedCategory === category ? 'active' : ''}`}
+              onClick={() => setSelectedCategory(category)}
+            >
+              {category}
+            </button>
           ))}
         </div>
-      )}
-    </div>
+
+        {filteredEvents.length === 0 ? (
+          <p className='no-events'>No matching events found.</p>
+        ) : (
+          <div className='events-grid'>
+            {filteredEvents.map((event) => (
+              <div key={event.id} className='event-card'>
+                <img
+                  src={
+                    event.image_url
+                      ? `http://localhost:3000${event.image_url}`
+                      : `https://picsum.photos/seed/${event.id}/600/400`
+                  }
+                  alt={event.title}
+                  className='event-image'
+                />
+
+                <span className='event-category'>
+                  {event.category}
+                </span>
+
+                <h2>{event.title}</h2>
+
+                <p>{event.description}</p>
+
+                <p>📍 {event.venue}</p>
+                <p>📅 {formatDate(event.event_date)}</p>
+                <p>🎟 ₹{event.price}</p>
+                <p>{event.available_tickets} tickets available</p>
+
+                <Link
+                  to={`/events/${event.id}`}
+                  className='event-link'
+                >
+                  View Event →
+                </Link>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </AnimatedPage>
   );
 }
 

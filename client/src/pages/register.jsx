@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../services/api";
 import "../styles/auth.css";
+import AnimatedPage from '../components/AnimatedPage';
 
 function Register() {
   const navigate = useNavigate();
@@ -33,7 +34,8 @@ function Register() {
   };
 
   return (
-    <div className="auth-container">
+    <AnimatedPage>
+      <div className="auth-container">
       <div className="auth-card">
         <h1>Register</h1>
 
@@ -77,8 +79,9 @@ function Register() {
             Already have an account? <Link to="/login">Login</Link>
           </p>
         </div>
-      </div>
-    </div>
+        </div>
+        </div>
+    </AnimatedPage>
   );
 }
 

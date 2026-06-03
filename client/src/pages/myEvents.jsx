@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import '../styles/myEvents.css';
+import AnimatedPage from '../components/AnimatedPage';
 
 function MyEvents() {
   const [events, setEvents] = useState([]);
@@ -59,55 +60,65 @@ function MyEvents() {
   }, []);
 
   if (loading) {
-    return <h2 className='loading-events'>Loading events...</h2>;
+    return (
+      <AnimatedPage>
+        <h2 className='loading-events'>Loading events...</h2>
+      </AnimatedPage>
+    );
   }
 
   if (error) {
-    return <h2 className='error-events'>{error}</h2>;
+    return (
+      <AnimatedPage>
+        <h2 className='error-events'>{error}</h2>
+      </AnimatedPage>
+    );
   }
 
   return (
-    <div className='my-events-container'>
-      <h1 className='my-events-title'>My Events</h1>
+    <AnimatedPage>
+      <div className='my-events-container'>
+        <h1 className='my-events-title'>My Events</h1>
 
-      {events.length === 0 ? (
-        <p className='no-events-message'>No events found.</p>
-      ) : (
-        <div className='events-grid'>
-          {events.map((event) => (
-            <div key={event.id} className='my-event-card'>
-              <h2>{event.title}</h2>
-              <p>{event.description}</p>
-              <p><strong>Venue:</strong> {event.venue}</p>
-              <p><strong>Category:</strong> {event.category}</p>
-              <p><strong>Date:</strong> {event.event_date}</p>
-              <p><strong>Price:</strong> ₹{event.price}</p>
-              <p><strong>Total Tickets:</strong> {event.total_tickets}</p>
-              <p><strong>Available Tickets:</strong> {event.available_tickets}</p>
+        {events.length === 0 ? (
+          <p className='no-events-message'>No events found.</p>
+        ) : (
+          <div className='events-grid'>
+            {events.map((event) => (
+              <div key={event.id} className='my-event-card'>
+                <h2>{event.title}</h2>
+                <p>{event.description}</p>
+                <p><strong>Venue:</strong> {event.venue}</p>
+                <p><strong>Category:</strong> {event.category}</p>
+                <p><strong>Date:</strong> {event.event_date}</p>
+                <p><strong>Price:</strong> ₹{event.price}</p>
+                <p><strong>Total Tickets:</strong> {event.total_tickets}</p>
+                <p><strong>Available Tickets:</strong> {event.available_tickets}</p>
 
-              <span className='event-stat'>
-                {event.available_tickets} Tickets Available
-              </span>
-              <div className='event-actions'>
-                <button
-                  className='edit-event-btn'
-                  onClick={() => handleEdit(event.id)}
-                >
-                  Edit
-                </button>
+                <span className='event-stat'>
+                  {event.available_tickets} Tickets Available
+                </span>
+                <div className='event-actions'>
+                  <button
+                    className='edit-event-btn'
+                    onClick={() => handleEdit(event.id)}
+                  >
+                    Edit
+                  </button>
 
-                <button
-                  className='delete-event-btn'
-                  onClick={() => handleDelete(event.id)}
-                >
-                  Delete
-                </button>
+                  <button
+                    className='delete-event-btn'
+                    onClick={() => handleDelete(event.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </AnimatedPage>
   );
 }
 

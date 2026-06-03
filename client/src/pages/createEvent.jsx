@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import '../styles/auth.css';
+import AnimatedPage from "../components/AnimatedPage";
+
+
 
 function CreateEvent() {
   const navigate = useNavigate();
@@ -60,6 +63,7 @@ function CreateEvent() {
   };
 
   return (
+    <AnimatedPage>
     <div className='auth-container'>
       <div className='auth-card'>
         <h1>Create Event</h1>
@@ -157,6 +161,7 @@ function CreateEvent() {
         </form>
       </div>
     </div>
+    </AnimatedPage>
   );
 }
 
