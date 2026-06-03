@@ -5,6 +5,7 @@ import MyBookings from "./pages/myBookings";
 import MyEvents from "./pages/myEvents";
 import CreateEvent from "./pages/createEvent";
 import EditEvent from "./pages/editEvent";
+import Tickets from "./pages/tickets";
 import Navbar from "./components/navbar";
 import Login from "./pages/login";
 import Register from "./pages/register";
@@ -49,6 +50,14 @@ function App() {
             <OrganizerRoute>
               <EditEvent />
             </OrganizerRoute>
+          }
+        />
+        <Route
+          path="/tickets/:bookingId"
+          element={
+            <ProtectedRoute>
+              <Tickets />
+            </ProtectedRoute>
           }
         />
         <Route path="/login" element={<Login />} />

@@ -176,3 +176,40 @@ export const cancelBooking = async (req, res) => {
     });
   }
 };
+
+export const getTicketsByBooking = async (req, res) => {
+  try {
+    const { bookingId } = req.params;
+    const user_id = req.user.userId;
+
+    const [bookings] = await db.query(
+      `SELECT * FROM bookings
+       WHERE id = ? AND user_id = ?`,
+      [bookingId, user_id],
+    );
+
+    if (bookings.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Booking not found',
+      });
+    }
+
+    const [tickets] = await db.query(
+      `SELECT id, ticket_code, is_used
+       FROM tickets
+       WHERE booking_id = ?`,
+      [bookingId],
+    );
+
+    res.status(200).json({
+      success: true,
+      tickets,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+};

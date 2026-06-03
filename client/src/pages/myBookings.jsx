@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import '../styles/myBookings.css';
 
@@ -6,6 +7,8 @@ function MyBookings() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const navigate = useNavigate();
 
   const fetchBookings = async () => {
     try {
@@ -90,12 +93,21 @@ function MyBookings() {
               </span>
 
               {booking.status === 'CONFIRMED' && (
-                <button
-                  className='cancel-booking-btn'
-                  onClick={() => handleCancelBooking(booking.id)}
-                >
-                  Cancel Booking
-                </button>
+                <>
+                  <button
+                    className='cancel-booking-btn'
+                    onClick={() => navigate(`/tickets/${booking.id}`)}
+                  >
+                    View Tickets
+                  </button>
+
+                  <button
+                    className='cancel-booking-btn'
+                    onClick={() => handleCancelBooking(booking.id)}
+                  >
+                    Cancel Booking
+                  </button>
+                </>
               )}
             </div>
           ))}

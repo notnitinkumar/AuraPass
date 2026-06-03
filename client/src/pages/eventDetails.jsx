@@ -1,13 +1,12 @@
-
-
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import api from '../services/api';
 import socket from '../socket';
 import '../styles/eventDetails.css';
 
 function EventDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [event, setEvent] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -51,6 +50,10 @@ function EventDetails() {
   const handleBooking = async () => {
     try {
       const token = localStorage.getItem('token');
+      if (!token) {
+        navigate('/login');
+        return;
+      }
 
       await api.post(
         '/bookings',
