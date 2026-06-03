@@ -63,3 +63,43 @@
   margin-top: 3rem;
   font-size: 1.1rem;
 }
+
+
+:root[data-theme='light'] .tickets-title {
+  color: #111827;
+}
+
+:root[data-theme='light'] .ticket-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+:root[data-theme='light'] .ticket-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+:root[data-theme='light'] .ticket-card h3 {
+  color: #111827;
+}
+
+:root[data-theme='light'] .ticket-code {
+  color: #4b5563;
+}
+
+:root[data-theme='light'] .ticket-status.active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+:root[data-theme='light'] .ticket-status.used {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+:root[data-theme='light'] .loading-message,
+:root[data-theme='light'] .error-message {
+  color: #6b7280;
+}
